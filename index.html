@@ -5,67 +5,54 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Nell — Pick Your Fate</title>
 <style>
-:root{--red:#b51622;--cream:#f6e8ce;--ink:#0b0b0d;--panel:#17171b;--gold:#d5a44c}
+:root{--red:#b51622;--cream:#f6e8ce}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 0,#381014 0,#120c0e 42%,#050506 100%);color:var(--cream);font-family:Georgia,"Times New Roman",serif}
 .wrap{max-width:560px;margin:auto;padding:34px 18px 46px;text-align:center}
 .eyebrow{letter-spacing:.22em;text-transform:uppercase;color:#d9b77a;font:700 12px Arial,sans-serif}
 h1{font-size:52px;line-height:.92;margin:12px 0 8px;text-shadow:0 3px 0 #5b080e}
-h2{font-size:22px;margin:0 0 8px}
-.sub{opacity:.78;margin:0 0 24px}
+h2{font-size:22px;margin:0 0 8px}.sub{opacity:.78;margin:0 0 24px}
 .card{background:linear-gradient(180deg,#1b1b20,#0d0d10);border:1px solid #512127;border-radius:22px;padding:18px;box-shadow:0 18px 45px #0008}
 .options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .option{position:relative;border:1px solid #54343a;border-radius:17px;padding:22px 8px;background:#17171b;color:var(--cream);font:700 20px Arial,sans-serif;cursor:pointer}
-.option input{position:absolute;opacity:0}
-.dot{display:block;width:22px;height:22px;border:2px solid #c9a56d;border-radius:50%;margin:12px auto 0}
+.option input{position:absolute;opacity:0}.dot{display:block;width:22px;height:22px;border:2px solid #c9a56d;border-radius:50%;margin:12px auto 0}
 .option:has(input:checked){border-color:#d9b16a;background:#291216;box-shadow:0 0 0 2px #7e2029 inset}
 .option:has(input:checked) .dot{background:var(--red);box-shadow:inset 0 0 0 4px #17171b}
 button,.sms{width:100%;border:0;border-radius:15px;padding:17px 14px;margin-top:16px;background:linear-gradient(#c6222e,#7e1018);color:white;font:800 16px Arial,sans-serif;letter-spacing:.04em;text-decoration:none;display:block}
-button:disabled{opacity:.4}
-#result{display:none;margin-top:20px;border-top:1px solid #4a292e;padding-top:20px}
-#result.show{display:block}
-.fate{font-size:27px;font-weight:900;color:#e8c27c;margin:4px 0 8px}
-.small{font:14px Arial,sans-serif;opacity:.78;line-height:1.5}
-.skull{font-size:30px}
+button:disabled{opacity:.4}#result{display:none;margin-top:20px;border-top:1px solid #4a292e;padding-top:20px}#result.show{display:block}
+.fate{font-size:27px;font-weight:900;color:#e8c27c;margin:4px 0 8px}.small{font:14px Arial,sans-serif;opacity:.78;line-height:1.5}.skull{font-size:30px}
 </style>
 </head>
 <body>
 <main class="wrap">
 <div class="eyebrow">Sunday • October 11</div>
-<h1>Nell…</h1>
-<h2>PICK A MOVIE TIME FOR SUNDAY</h2>
-<p class="sub">Which works best for you?</p>
+<h1>Nell…</h1><h2>PICK A MOVIE TIME FOR SUNDAY</h2><p class="sub">Which works best for you?</p>
 <section class="card">
-<form id="poll">
-<div class="options">
+<form id="poll"><div class="options">
 <label class="option"><input type="radio" name="time" value="12:30 PM"><span>12:30 PM</span><i class="dot"></i></label>
 <label class="option"><input type="radio" name="time" value="3:00 PM"><span>3:00 PM</span><i class="dot"></i></label>
 <label class="option"><input type="radio" name="time" value="5:30 PM"><span>5:30 PM</span><i class="dot"></i></label>
 <label class="option"><input type="radio" name="time" value="8:00 PM"><span>8:00 PM</span><i class="dot"></i></label>
-</div>
-<button id="confirm" type="submit" disabled>☠️ CONFIRM YOUR FATE ☠️</button>
-</form>
-<div id="result">
-<div class="skull">☠️</div>
-<div class="fate">YOUR FATE IS SEALED</div>
-<p id="chosen" class="small"></p>
-<a id="sms" class="sms" href="#">📱 SEND MY ANSWER TO RYAN</a>
-</div>
-</section>
-</main>
+</div><button id="confirm" type="submit" disabled>☠️ CONFIRM YOUR FATE ☠️</button></form>
+<div id="result"><div class="skull">☠️</div><div class="fate">YOUR FATE IS SEALED</div><p id="chosen" class="small"></p>
+<a id="sms" class="sms" href="#">📱 SEND MY ANSWER TO RYAN</a></div>
+</section></main>
 <script>
-const form=document.getElementById('poll'), confirmBtn=document.getElementById('confirm');
-const result=document.getElementById('result'), chosen=document.getElementById('chosen'), sms=document.getElementById('sms');
+const form=document.getElementById('poll'),confirmBtn=document.getElementById('confirm'),
+result=document.getElementById('result'),chosen=document.getElementById('chosen'),sms=document.getElementById('sms');
+let selected='';
 document.querySelectorAll('input[name="time"]').forEach(x=>x.addEventListener('change',()=>confirmBtn.disabled=false));
 form.addEventListener('submit',e=>{
  e.preventDefault();
- const t=document.querySelector('input[name="time"]:checked').value;
- chosen.textContent=`Sunday at ${t}. No turning back now.`;
- const body=`☠️ My fate is sealed. I choose ${t} 🎬🍿 See you Sunday!`;
- sms.href='sms:+16082340286?&body='+encodeURIComponent(body);
+ selected=document.querySelector('input[name="time"]:checked').value;
+ chosen.textContent=`Sunday at ${selected}. No turning back now.`;
  result.classList.add('show');
  result.scrollIntoView({behavior:'smooth',block:'center'});
 });
+sms.addEventListener('click',e=>{
+ e.preventDefault();
+ const body=`☠️ My fate is sealed. I choose ${selected} 🎬🍿 See you Sunday!`;
+ window.location.href='sms://+16082340286?body='+encodeURIComponent(body);
+});
 </script>
-</body>
-</html>
+</body></html>
